@@ -1,0 +1,53 @@
+server:
+  port: ${smartdata.properties.server.port}
+  error:
+    includeStacktrace: ${smartdata.properties.server.error.includeStacktrace}
+    whitelabel:
+      enabled: ${smartdata.properties.server.error.whitelabel.enabled}
+
+logging:
+  level:
+    web: ${smartdata.properties.logging.level.web}
+
+spring:
+  main:
+    allowBeanDefinitionOverriding: ${smartdata.properties.spring.main.allowBeanDefinitionOverriding}
+  devtools:
+    addProperties: ${smartdata.properties.spring.devtools.addProperties}
+  data:
+    mongodb:
+      database: ${smartdata.properties.spring.data.mongodb.database}
+      host: ${smartdata.properties.spring.data.mongodb.host}
+      port: ${smartdata.properties.spring.data.mongodb.port}
+      username: ${smartdata.properties.spring.data.mongodb.username}
+      password: ${smartdata.properties.spring.data.mongodb.password}
+      autoIndexCreation: ${smartdata.properties.spring.data.mongodb.autoIndexCreation}
+      authenticationDatabase: ${smartdata.properties.spring.data.mongodb.authenticationDatabase}
+
+smartdata:
+  properties:
+    server:
+      port: ${SAVE_DATA_API_SERVER_PORT:4444}
+      error:
+        includeStacktrace: ${SAVE_DATA_API_SERVER_ERROR_INCLUDE_STACK_TRACE:never}
+        whitelabel:
+          enabled: ${SAVE_DATA_API_SERVER_ERROR_WHITELABEL_ENABLED:true}
+
+    logging:
+      level:
+        web: ${SAVE_DATA_API_LOGGING_LEVEL_WEB:debug}
+
+    spring:
+      main:
+        allowBeanDefinitionOverriding: ${SAVE_DATA_API_SPRING_BEAN_DEFINITION_OVERRIDING:true}
+      devtools:
+        addProperties: ${SAVE_DATA_API_SPRING_DEVTOOLS_ADD_PROPERTIES:true}
+      data:
+        mongodb:
+          database: ${SAVE_DATA_API_SPRING_DATA_MONGODB_DATABASE:smartdata}
+          host: ${SAVE_DATA_API_SPRING_DATA_MONGODB_HOST:127.0.0.1}
+          port: ${SAVE_DATA_API_SPRING_DATA_MONGODB_PORT:27017}
+          username: ${SAVE_DATA_API_SPRING_DATA_MONGODB_USERNAME:root}
+          password: ${SAVE_DATA_API_SPRING_DATA_MONGODB_PASSWORD:root}
+          autoIndexCreation: ${SAVE_DATA_API_SPRING_DATA_MONGODB_AUTO_INDEX_CREATION:true}
+          authenticationDatabase: ${SAVE_DATA_API_SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE:admin}

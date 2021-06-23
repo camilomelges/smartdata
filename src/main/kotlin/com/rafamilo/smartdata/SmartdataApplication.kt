@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class SmartdataApplication
 
 fun main(args: Array<String>) {
-	runApplication<SmartdataApplication>(*args)
+    runApplication<SmartdataApplication>(*args)
 }
