@@ -23,6 +23,14 @@ spring:
       password: ${smartdata.properties.spring.data.mongodb.password}
       autoIndexCreation: ${smartdata.properties.spring.data.mongodb.autoIndexCreation}
       authenticationDatabase: ${smartdata.properties.spring.data.mongodb.authenticationDatabase}
+    elasticsearch:
+      client:
+        reactive:
+          host: ${smartdata.properties.spring.data.elasticsearch.client.reactive.host}
+          port: ${smartdata.properties.spring.data.elasticsearch.client.reactive.port}
+          username: ${smartdata.properties.spring.data.elasticsearch.client.reactive.username}
+          password: ${smartdata.properties.spring.data.elasticsearch.client.reactive.password}
+          max-in-memory-size: ${smartdata.properties.spring.data.elasticsearch.client.reactive.max-in-memory-size}
 
 smartdata:
   properties:
@@ -54,3 +62,14 @@ smartdata:
           image:
             name: ${SAVE_DATA_API_SPRING_DATA_MONGODB_IMAGE_NAME:mongo}
             version: ${SAVE_DATA_API_SPRING_DATA_MONGODB_IMAGE_VERSION:3}
+        elasticsearch:
+          client:
+            reactive:
+              host: ${SAVE_DATA_API_SPRING_DATA_ELASTIC_SEARCH_HOST:localhost}
+              port: ${SAVE_DATA_API_SPRING_DATA_ELASTIC_SEARCH_PORT:9222}
+              username: ${SAVE_DATA_API_SPRING_DATA_ELASTIC_SEARCH_USERNAME:elastic}
+              password: ${SAVE_DATA_API_SPRING_DATA_ELASTIC_SEARCH_PASSWORD:elastic}
+              max-in-memory-size: ${SAVE_DATA_API_SPRING_DATA_ELASTIC_SEARCH_MEMORY_SIZE:-1}
+          image:
+            name: ${SAVE_DATA_API_SPRING_DATA_ELASTIC_SEARCH_IMAGE_NAME:docker.elastic.co/elasticsearch/elasticsearch}
+            version: ${SAVE_DATA_API_SPRING_DATA_ELASTIC_SEARCH_IMAGE_VERSION:7.13.3}
