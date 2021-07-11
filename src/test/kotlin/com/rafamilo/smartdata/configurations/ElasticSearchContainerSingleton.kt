@@ -64,9 +64,8 @@ open class ElasticSearchContainerSingleton {
         if (ELASTIC_SEARCH_CONTAINER == null) {
             ELASTIC_SEARCH_CONTAINER = ElasticsearchContainer(getElasticSearchImageName)
                     .withPassword(PASSWORD)
-                    .withEnv("discovery.type", "single-node")
                     .withEnv("bootstrap.memory_lock", "true")
-                    .withEnv("ES_JAVA_OPTS", "-Xms1024m -Xmx1024m")
+                    .withEnv("ES_JAVA_OPTS", "-Xms256m -Xmx256m")
             ELASTIC_SEARCH_CONTAINER!!.portBindings = listOf("$PORT:9200", "9300:9300")
             ELASTIC_SEARCH_CONTAINER!!.start()
         }

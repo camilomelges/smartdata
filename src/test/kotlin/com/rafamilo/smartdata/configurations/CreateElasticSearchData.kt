@@ -2,13 +2,13 @@ package com.rafamilo.smartdata.configurations
 
 import com.beust.klaxon.Klaxon
 import com.rafamilo.smartdata.domain.searches.entities.Search
+import kotlinx.coroutines.reactive.awaitLast
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.data.mongodb.core.ReactiveMongoTemplate
-import org.springframework.data.mongodb.core.query.Query
+import org.springframework.data.elasticsearch.core.ReactiveElasticsearchTemplate
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.util.ResourceUtils
 import org.testcontainers.shaded.com.google.common.collect.ImmutableList
@@ -16,13 +16,16 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.kotlin.core.publisher.toFlux
 import java.nio.file.Files
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
+
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
-class CreateStartMongoData : MongoDBContainerSingleton() {
+class CreateElasticSearchData : ElasticSearchContainerSingleton() {
 
     @Autowired
-    private lateinit var reactiveMongoTemplate: ReactiveMongoTemplate
+    private lateinit var reactiveElasticsearchTemplate: ReactiveElasticsearchTemplate
 
     @Test
     fun shouldBeInsert1254SearchesInDB() {
@@ -33,9 +36,9 @@ class CreateStartMongoData : MongoDBContainerSingleton() {
                 ?.map(::toFlux)
                 ?.map(::collectList)
                 ?.map(::toSearchsList)
-                ?.forEachOrdered { insertAllMongo(it).blockLast() }
+                ?.map { insertAllElastic(it).blockLast() }
 
-        Assertions.assertEquals(1254, getSearchsCountMongo().block())
+        Assertions.assertEquals(1254, getSearchsCountElasticsearch())
     }
 
     private fun toSearchsList(list: Mono<out MutableList<out Any>>): Mono<out MutableList<out Search>> {
@@ -50,12 +53,12 @@ class CreateStartMongoData : MongoDBContainerSingleton() {
         return flux.collectList()
     }
 
-    private fun getSearchsCountMongo(): Mono<Long> {
-        return reactiveMongoTemplate.count(Query(), "searches")
+    private fun getSearchsCountElasticsearch(): Long? {
+        return reactiveElasticsearchTemplate.count(Search::class.java).block()
     }
 
-    private fun insertAllMongo(searches: Mono<out MutableList<out Search>>): Flux<Search> {
-        return reactiveMongoTemplate.insertAll(searches)
+    private fun insertAllElastic(searches: Mono<out MutableList<out Search>>): Flux<Search> {
+        return reactiveElasticsearchTemplate.saveAll(searches, Search::class.java)
     }
 
     private fun getPathFromFile(): String {
